@@ -1,4 +1,4 @@
-/**
+/*
 * @license Apache-2.0
 *
 * Copyright (c) 2026 The Stdlib Authors.
@@ -16,22 +16,29 @@
 * limitations under the License.
 */
 
-'use strict';
+// TypeScript Version: 4.1
 
-// MODULES //
+/// <reference types="https://cdn.jsdelivr.net/gh/stdlib-js/types@esm/index.d.ts"/>
 
-var incrmhmean = require( '@stdlib/stats-incr-mhmean' );
-var isnan = require( '@stdlib/math-base-assert-is-nan' );
-
-
-// MAIN //
+/**
+* If provided a value, returns an updated harmonic mean; otherwise, returns the current harmonic mean, ignoring `NaN` values.
+*
+* @param x - value
+* @returns harmonic mean
+*/
+type accumulator = ( x?: number ) => number | null;
 
 /**
 * Returns an accumulator function which incrementally computes a moving harmonic mean, ignoring `NaN` values.
 *
-* @param {PositiveInteger} W - window size
-* @throws {TypeError} must provide a positive integer
-* @returns {Function} accumulator function
+* ## Notes
+*
+* -   The `W` parameter defines the number of values over which to compute the moving harmonic mean.
+* -   As `W` values are needed to fill the window buffer, the first `W-1` returned values are calculated from smaller sample sizes. Until the window is full, each returned value is calculated from all provided values.
+*
+* @param W - window size
+* @throws must provide a positive integer
+* @returns accumulator function
 *
 * @example
 * var accumulator = incrnanmhmean( 3 );
@@ -60,26 +67,9 @@ var isnan = require( '@stdlib/math-base-assert-is-nan' );
 * v = accumulator();
 * // returns ~4.09
 */
-function incrnanmhmean( W ) {
-	var mhmean = incrmhmean( W );
-	return accumulator;
-
-	/**
-	* If provided a value, the accumulator function returns an updated harmonic mean. If not provided a value, the accumulator function returns the current harmonic mean.
-	*
-	* @private
-	* @param {number} [x] - input value
-	* @returns {(number|null)} harmonic mean or null
-	*/
-	function accumulator( x ) {
-		if ( arguments.length === 0 || isnan( x ) ) {
-			return mhmean();
-		}
-		return mhmean( x );
-	}
-}
+declare function incrnanmhmean( W: number ): accumulator;
 
 
 // EXPORTS //
 
-module.exports = incrnanmhmean;
+export = incrnanmhmean;
